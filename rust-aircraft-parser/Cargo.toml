@@ -1,0 +1,12 @@
+[package]
+name = "rust-aircraft-parser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde_json = "1.0.107"
+serde = { version = "1.0.189", features = ["derive"] }
+mongodb = "2.7.0"
+dotenv = "0.15.0"
+tokio = { version = "1.0.0", features = ["rt", "rt-multi-thread", "macros"] }
+uuid = { version = "1.4.1", features = ["v4"] }
