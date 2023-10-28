@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -15,14 +16,15 @@ func main() {
 	ctx := context.TODO()
 	mongoDB := connectToMongo(ctx)
 	aircrafts := getAircrafts(ctx, mongoDB)
+	addManufacturer(aircrafts)
 }
 
-func connectToMongo(c context.Context) *mongo.Database {
+func connectToMongo(ctx context.Context) *mongo.Database {
 	apiOptions := mongoOptions.ServerAPI(mongoOptions.ServerAPIVersion1)
 	clientOptions := mongoOptions.Client().ApplyURI(os.Getenv("MONGODB_URL")).SetServerAPIOptions(apiOptions)
-	ctx, cancel := context.WithTimeout(c, 10*time.Second)
+	ctxTimeout, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, clientOptions)
+	client, err := mongo.Connect(ctxTimeout, clientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,8 +46,29 @@ func getAircrafts(ctx context.Context, db *mongo.Database) []Aircraft {
 	return aircrafts
 }
 
+// load from manufacturers.json
+func loadManufacturers() {
+	// Open the file
+	file, err := os.Open("manufacturers.json")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	var data []Manufacturer
+	err = json.NewDecoder(file).Decode(&data)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+}
+
 func addManufacturer(aircraft []Aircraft) {
 
+}
+
+type Manufacturer struct {
+	ID   string `json:"id"`   // The ID of the aircraft
+	Name string `json:"name"` // The manufacturer of the aircraft
 }
 
 type Aircraft struct {
