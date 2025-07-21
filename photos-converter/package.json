@@ -1,11 +1,13 @@
 {
 	"scripts": {
-		"convert": "node convert.js",
-		"convert-ts": "bun convert.ts"
+		"convert": "redrun --series convert:avif",
+		"convert:webp": "bun convert-webp.ts",
+		"convert:avif": "bun convert-avif.ts"
 	},
 	"devDependencies": {
 		"fs-extra": "^11.3.0",
 		"path": "^0.12.7",
+		"redrun": "^12.0.0",
 		"sharp": "^0.34.3",
 		"uuid": "11.1.0"
 	},

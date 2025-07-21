@@ -8,7 +8,7 @@ import { v4 } from 'uuid'; // Importing UUID for unique file names
 // Configuration
 const INPUT_DIR = './input_images';
 const OUTPUT_DIR = './output_images';
-const AVIF_QUALITY = 100; // Adjust quality (0-100)
+const AVIF_QUALITY = 90; // Adjust quality (0-100)
 
 // Supported image extensions
 const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.tiff', '.bmp', '.avif'];
@@ -96,10 +96,7 @@ async function processImage(
 
     // Convert to AVIF using sharp [[8]]
     const info = await sharp(inputPath)
-      .avif({
-        quality: AVIF_QUALITY,
-        effort: 4 // Balance between speed and compression (0-9)
-      })
+      .avif({ effort: 9 })
       .toFile(outputPath); // Write the output image data to a file [[1]]
 
     // Get output file size
