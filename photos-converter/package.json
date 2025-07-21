@@ -9,5 +9,5 @@
 		"sharp": "^0.34.3",
 		"uuid": "11.1.0"
 	},
-	"packageManager": "pnpm@9.15.3"
+	"packageManager": "pnpm@10.13.1"
 }
