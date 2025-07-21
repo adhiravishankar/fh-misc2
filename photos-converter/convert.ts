@@ -3,14 +3,15 @@
 import sharp from 'sharp';
 import * as fse from 'fs-extra';
 import * as path from 'path';
+import { v4 } from 'uuid'; // Importing UUID for unique file names
 
 // Configuration
-const INPUT_DIR = './input-images';
-const OUTPUT_DIR = './output-images';
+const INPUT_DIR = './input_images';
+const OUTPUT_DIR = './output_images';
 const AVIF_QUALITY = 100; // Adjust quality (0-100)
 
 // Supported image extensions
-const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.tiff'];
+const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.tiff', '.bmp', '.avif'];
 
 interface ConversionResult {
   fileName: string;
@@ -44,7 +45,7 @@ async function convertImagesToAvif(): Promise<void> {
 
     // Read all files from input directory
     const files = await fse.readdir(INPUT_DIR);
-    
+
     // Filter for supported image files
     const imageFiles = files.filter((file: string): boolean => {
       const ext = path.extname(file).toLowerCase();
@@ -78,12 +79,12 @@ async function convertImagesToAvif(): Promise<void> {
  * Process a single image file
  */
 async function processImage(
-  file: string, 
-  current: number, 
+  file: string,
+  current: number,
   total: number
 ): Promise<ConversionResult> {
   const inputPath = path.join(INPUT_DIR, file);
-  const outputFileName = `${path.parse(file).name}.avif`;
+  const outputFileName = `${v4()}.avif`;
   const outputPath = path.join(OUTPUT_DIR, outputFileName);
 
   console.log(`[${current}/${total}] Converting: ${file}`);
@@ -95,7 +96,7 @@ async function processImage(
 
     // Convert to AVIF using sharp [[8]]
     const info = await sharp(inputPath)
-      .avif({ 
+      .avif({
         quality: AVIF_QUALITY,
         effort: 4 // Balance between speed and compression (0-9)
       })
@@ -124,7 +125,7 @@ async function processImage(
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error(`   ❌ Error converting ${file}: ${errorMessage}\n`);
-    
+
     return {
       fileName: file,
       success: false,
@@ -139,28 +140,28 @@ async function processImage(
 function displaySummary(results: ConversionResult[]): void {
   console.log('━'.repeat(50));
   console.log('\n📊 Conversion Summary:');
-  
+
   const successful = results.filter(r => r.success);
   const failed = results.filter(r => !r.success);
-  
+
   console.log(`   ✅ Successfully converted: ${successful.length} image(s)`);
-  
+
   if (failed.length > 0) {
     console.log(`   ❌ Failed conversions: ${failed.length} image(s)`);
     failed.forEach(f => {
       console.log(`      - ${f.fileName}: ${f.error}`);
     });
   }
-  
+
   // Calculate total size reduction
   if (successful.length > 0) {
     const totalInputSize = successful.reduce((sum, r) => sum + (r.inputSize || 0), 0);
     const totalOutputSize = successful.reduce((sum, r) => sum + (r.outputSize || 0), 0);
     const totalReduction = ((1 - totalOutputSize / totalInputSize) * 100).toFixed(1);
-    
+
     console.log(`   💾 Total size reduction: ${totalReduction}%`);
   }
-  
+
   console.log(`   📁 Output directory: ${OUTPUT_DIR}\n`);
 }
 

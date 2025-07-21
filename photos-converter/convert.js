@@ -5,12 +5,12 @@ const fse = require('fs-extra');
 const path = require('path');
 
 // Configuration
-const INPUT_DIR = './input-images';
-const OUTPUT_DIR = './output-images';
+const INPUT_DIR = './input_images';
+const OUTPUT_DIR = './output_images';
 const AVIF_QUALITY = 100; // Adjust quality (0-100)
 
 // Supported image extensions
-const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.tiff'];
+const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.tiff', '.bmp', '.avif'];
 
 /**
  * Converts all images in the input directory to AVIF format
@@ -32,7 +32,7 @@ async function convertImagesToAvif() {
 
     // Read all files from input directory
     const files = await fse.readdir(INPUT_DIR);
-    
+
     // Filter for supported image files
     const imageFiles = files.filter(file => {
       const ext = path.extname(file).toLowerCase();
@@ -64,9 +64,9 @@ async function convertImagesToAvif() {
 
         // Convert to AVIF using sharp
         const info = await sharp(inputPath)
-          .avif({ 
+          .avif({
             quality: AVIF_QUALITY,
-            effort: 4 // Balance between speed and compression (0-9)
+            effort: 9 // Balance between speed and compression (0-9)
           })
           .toFile(outputPath);
 

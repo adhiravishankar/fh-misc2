@@ -1,8 +1,13 @@
 {
+	"scripts": {
+		"convert": "node convert.js",
+		"convert-ts": "bun convert.ts"
+	},
 	"devDependencies": {
 		"fs-extra": "^11.3.0",
 		"path": "^0.12.7",
-		"sharp": "^0.34.3"
+		"sharp": "^0.34.3",
+		"uuid": "11.1.0"
 	},
 	"packageManager": "pnpm@9.15.3"
 }
