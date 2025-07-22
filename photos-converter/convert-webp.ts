@@ -3,12 +3,14 @@
 import sharp from 'sharp';
 import * as fse from 'fs-extra';
 import * as path from 'path';
-import { v4 } from 'uuid'; // Importing UUID for unique file names
+import { v4 } from 'uuid';
+import * as os from 'os';
 
 // Configuration
 const INPUT_DIR = './input_images';
 const OUTPUT_DIR = './output_images';
 const WEBP_QUALITY = 90; // Adjust quality (0-100)
+const MAX_CONCURRENT_JOBS = Math.min(os.cpus().length, 4); // Limit concurrent jobs
 
 // Supported image extensions
 const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.tiff', '.bmp', '.avif'];
@@ -23,13 +25,15 @@ interface ConversionResult {
     width: number;
     height: number;
   };
+  processingTime?: number;
 }
 
 /**
- * Converts all images in the input directory to WebP format
+ * Converts all images in the input directory to WebP format using parallel processing
  */
 async function convertImagesToWebP(): Promise<void> {
-  console.log('🚀 Starting image conversion to WEBP...\n');
+  console.log('🚀 Starting parallel image conversion to WebP...\n');
+  const startTime = Date.now();
 
   try {
     // Ensure input directory exists
@@ -57,18 +61,37 @@ async function convertImagesToWebP(): Promise<void> {
       return;
     }
 
-    console.log(`📁 Found ${imageFiles.length} image(s) to convert:\n`);
+    console.log(`📁 Found ${imageFiles.length} image(s) to convert using ${MAX_CONCURRENT_JOBS} parallel workers:\n`);
 
-    // Process each image
+    // Process images in parallel batches
     const results: ConversionResult[] = [];
+    const batches = createBatches(imageFiles, MAX_CONCURRENT_JOBS);
 
-    for (const [index, file] of imageFiles.entries()) {
-      const result = await processImage(file, index + 1, imageFiles.length);
-      results.push(result);
+    for (const batch of batches) {
+      const batchPromises = batch.map((file, index) => 
+        processImage(file, results.length + index + 1, imageFiles.length)
+      );
+      
+      const batchResults = await Promise.allSettled(batchPromises);
+      
+      // Process results
+      batchResults.forEach((result, index) => {
+        if (result.status === 'fulfilled') {
+          results.push(result.value);
+        } else {
+          results.push({
+            fileName: batch[index],
+            success: false,
+            error: result.reason?.message || 'Unknown error'
+          });
+        }
+      });
     }
 
+    const totalTime = Date.now() - startTime;
+    
     // Display summary
-    displaySummary(results);
+    displaySummary(results, totalTime);
 
   } catch (error) {
     console.error('❌ Fatal error:', error instanceof Error ? error.message : error);
@@ -76,7 +99,18 @@ async function convertImagesToWebP(): Promise<void> {
 }
 
 /**
- * Process a single image file
+ * Create batches for parallel processing
+ */
+function createBatches<T>(items: T[], batchSize: number): T[][] {
+  const batches: T[][] = [];
+  for (let i = 0; i < items.length; i += batchSize) {
+    batches.push(items.slice(i, i + batchSize));
+  }
+  return batches;
+}
+
+/**
+ * Process a single image file with memory optimization
  */
 async function processImage(
   file: string,
@@ -86,6 +120,7 @@ async function processImage(
   const inputPath = path.join(INPUT_DIR, file);
   const outputFileName = `${v4()}.webp`;
   const outputPath = path.join(OUTPUT_DIR, outputFileName);
+  const startTime = Date.now();
 
   console.log(`[${current}/${total}] Converting: ${file}`);
 
@@ -94,17 +129,28 @@ async function processImage(
     const inputStats = await fse.stat(inputPath);
     const inputSizeMB = (inputStats.size / 1024 / 1024).toFixed(2);
 
-    // Convert to WebP using sharp [[8]]
-    const info = await sharp(inputPath)
-      .webp({ effort: 6 })
-      .toFile(outputPath); // Write the output image data to a file [[1]]
+    // Convert to WebP using sharp with memory optimization
+    const pipeline = sharp(inputPath, {
+      // Limit memory usage
+      limitInputPixels: 268402689, // 16384 x 16384
+      sequentialRead: true
+    });
+
+    const info = await pipeline
+      .webp({ 
+        effort: 6,
+        quality: WEBP_QUALITY,
+        alphaQuality: 100
+      })
+      .toFile(outputPath);
 
     // Get output file size
     const outputStats = await fse.stat(outputPath);
     const outputSizeMB = (outputStats.size / 1024 / 1024).toFixed(2);
     const reduction = ((1 - outputStats.size / inputStats.size) * 100).toFixed(1);
+    const processingTime = Date.now() - startTime;
 
-    console.log(`   ✅ Success: ${outputFileName}`);
+    console.log(`   ✅ Success: ${outputFileName} (${processingTime}ms)`);
     console.log(`   📊 Size: ${inputSizeMB}MB → ${outputSizeMB}MB (${reduction}% reduction)`);
     console.log(`   📐 Dimensions: ${info.width}x${info.height}\n`);
 
@@ -116,7 +162,8 @@ async function processImage(
       dimensions: {
         width: info.width,
         height: info.height
-      }
+      },
+      processingTime
     };
 
   } catch (error) {
@@ -126,22 +173,29 @@ async function processImage(
     return {
       fileName: file,
       success: false,
-      error: errorMessage
+      error: errorMessage,
+      processingTime: Date.now() - startTime
     };
   }
 }
 
 /**
- * Display conversion summary
+ * Display conversion summary with performance metrics
  */
-function displaySummary(results: ConversionResult[]): void {
-  console.log('━'.repeat(50));
+function displaySummary(results: ConversionResult[], totalTime: number): void {
+  console.log('━'.repeat(60));
   console.log('\n📊 Conversion Summary:');
 
   const successful = results.filter(r => r.success);
   const failed = results.filter(r => !r.success);
 
   console.log(`   ✅ Successfully converted: ${successful.length} image(s)`);
+  console.log(`   ⏱️  Total processing time: ${(totalTime / 1000).toFixed(2)}s`);
+  
+  if (successful.length > 0) {
+    const avgTime = successful.reduce((sum, r) => sum + (r.processingTime || 0), 0) / successful.length;
+    console.log(`   📈 Average time per image: ${avgTime.toFixed(0)}ms`);
+  }
 
   if (failed.length > 0) {
     console.log(`   ❌ Failed conversions: ${failed.length} image(s)`);
@@ -157,6 +211,7 @@ function displaySummary(results: ConversionResult[]): void {
     const totalReduction = ((1 - totalOutputSize / totalInputSize) * 100).toFixed(1);
 
     console.log(`   💾 Total size reduction: ${totalReduction}%`);
+    console.log(`   📦 Total space saved: ${((totalInputSize - totalOutputSize) / 1024 / 1024).toFixed(2)}MB`);
   }
 
   console.log(`   📁 Output directory: ${OUTPUT_DIR}\n`);
