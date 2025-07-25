@@ -8,7 +8,6 @@ import { v4 } from 'uuid'; // Importing UUID for unique file names
 // Configuration
 const INPUT_DIR = './input_images';
 const OUTPUT_DIR = './output_images';
-const WEBP_QUALITY = 90; // Adjust quality (0-100)
 
 // Supported image extensions
 const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.tiff', '.bmp', '.avif'];

@@ -4,11 +4,11 @@ import sharp from 'sharp';
 import * as fse from 'fs-extra';
 import * as path from 'path';
 import { v4 } from 'uuid'; // Importing UUID for unique file names
+import pLimit from 'p-limit'; // Import p-limit for concurrency control
 
 // Configuration
 const INPUT_DIR = './input_images';
 const OUTPUT_DIR = './output_images';
-const AVIF_QUALITY = 90; // Adjust quality (0-100)
 
 // Supported image extensions
 const SUPPORTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.tiff', '.bmp', '.avif'];
@@ -59,13 +59,13 @@ async function convertImagesToAvif(): Promise<void> {
 
     console.log(`📁 Found ${imageFiles.length} image(s) to convert:\n`);
 
-    // Process each image
-    const results: ConversionResult[] = [];
-
-    for (const [index, file] of imageFiles.entries()) {
-      const result = await processImage(file, index + 1, imageFiles.length);
-      results.push(result);
-    }
+    // Process each image in parallel with concurrency limit
+    const limit = pLimit(4); // Limit concurrency to 4
+    const results: ConversionResult[] = await Promise.all(
+      imageFiles.map((file, index) =>
+        limit(() => processImage(file, index + 1, imageFiles.length))
+      )
+    );
 
     // Display summary
     displaySummary(results);
