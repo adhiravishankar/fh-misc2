@@ -8,9 +8,15 @@ importers:
 
   .:
     devDependencies:
+      '@types/cli-progress':
+        specifier: ^3.11.6
+        version: 3.11.6
       '@types/node':
         specifier: ^24.1.0
         version: 24.1.0
+      cli-progress:
+        specifier: ^3.12.0
+        version: 3.12.0
       fs-extra:
         specifier: ^11.3.0
         version: 11.3.0
@@ -1261,6 +1267,9 @@ packages:
     engines: {node: ^18.12 || >=20.9}
     peerDependencies:
       stylelint: ^16.8.0
+
+  '@types/cli-progress@3.11.6':
+    resolution: {integrity: sha512-cE3+jb9WRlu+uOSAugewNpITJDt1VF8dHOopPO4IABFc3SXYL5WE/+PTz/FCdZRRfIujiWW3n3aMbv1eIGVRWA==}
 
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
@@ -4298,6 +4307,10 @@ snapshots:
       postcss-value-parser: 4.2.0
       style-search: 0.1.0
       stylelint: 16.22.0(typescript@5.8.3)
+
+  '@types/cli-progress@3.11.6':
+    dependencies:
+      '@types/node': 24.1.0
 
   '@types/debug@4.1.12':
     dependencies:

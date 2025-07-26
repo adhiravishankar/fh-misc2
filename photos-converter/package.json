@@ -5,7 +5,9 @@
 		"convert:avif": "bun convert-avif.ts"
 	},
 	"devDependencies": {
+		"@types/cli-progress": "^3.11.6",
 		"@types/node": "^24.1.0",
+		"cli-progress": "^3.12.0",
 		"fs-extra": "^11.3.0",
 		"path": "^0.12.7",
 		"p-limit": "^6.2.0",
