@@ -30,7 +30,7 @@ async fn create_mongodb() -> mongodb::Collection<Document> {
     // Create a new client and connect to the server
     let client = Client::with_uri_str(uri).await.expect("cannot create mongo client");
     // Get a handle on the movies collection
-    let database = client.database("flights");
+    let database = client.database("flights-admin");
     let aircraft_collection = database.collection::<Document>("aircraft");
     return aircraft_collection
 }
