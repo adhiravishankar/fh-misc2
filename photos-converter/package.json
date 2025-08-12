@@ -3,7 +3,9 @@
 		"process:scratch": "bun process-scratch.ts",
 		"convert": "redrun --series convert:avif",
 		"convert:webp": "bun convert-webp.ts",
-		"convert:avif": "bun convert-avif.ts"
+		"convert:avif": "bun convert-avif.ts",
+		"countries:regen": "bun convert-countries-data.ts",
+		"countries:regen:out": "bun convert-countries-data.ts --out=./countries-data.ts"
 	},
 	"devDependencies": {
 		"@types/cli-progress": "^3.11.6",

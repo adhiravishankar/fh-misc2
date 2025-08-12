@@ -60,7 +60,7 @@ async function convertImagesToAvif(): Promise<void> {
     console.log(`📁 Found ${imageFiles.length} image(s) to convert:\n`);
 
     // Process each image in parallel with concurrency limit
-    const limit = pLimit(4); // Limit concurrency to 4
+    const limit = pLimit(12); // Limit concurrency to 12
     const results: ConversionResult[] = await Promise.all(
       imageFiles.map((file, index) =>
         limit(() => processImage(file, index + 1, imageFiles.length))
@@ -110,11 +110,11 @@ async function copyAvifFile(
     }
 
     console.log(`   ✅ Copied AVIF: ${outputFileName}`);
-    console.log(`   📊 Size: ${inputSizeMB}MB (no conversion)`);
+    console.log(`   📊 ${outputFileName} Size: ${inputSizeMB}MB (no conversion)`);
     if (dimensions.width > 0 && dimensions.height > 0) {
-      console.log(`   📐 Dimensions: ${dimensions.width}x${dimensions.height}\n`);
+      console.log(`   📐 ${outputFileName} Dimensions: ${dimensions.width}x${dimensions.height}\n`);
     } else {
-      console.log(`   📐 Dimensions: Unknown\n`);
+      console.log(`   📐 ${outputFileName} Dimensions: Unknown\n`);
     }
 
     return {
@@ -174,8 +174,8 @@ async function convertImageToAvif(
     const reduction = ((1 - outputStats.size / inputStats.size) * 100).toFixed(1);
 
     console.log(`   ✅ Converted to AVIF: ${outputFileName}`);
-    console.log(`   📊 Size: ${inputSizeMB}MB → ${outputSizeMB}MB (${reduction}% reduction)`);
-    console.log(`   📐 Dimensions: ${info.width}x${info.height}\n`);
+    console.log(`   📊 ${outputFileName} Size: ${inputSizeMB}MB → ${outputSizeMB}MB (${reduction}% reduction)`);
+    console.log(`   📐 ${outputFileName} Dimensions: ${info.width}x${info.height}\n`);
 
     return {
       fileName: file,
