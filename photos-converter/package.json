@@ -9,11 +9,11 @@
 	},
 	"devDependencies": {
 		"@types/cli-progress": "^3.11.6",
-		"@types/node": "^24.2.0",
+		"@types/node": "^24.3.0",
 		"cli-progress": "^3.12.0",
 		"fs-extra": "^11.3.1",
 		"path": "^0.12.7",
-		"p-limit": "^6.2.0",
+		"p-limit": "^7.0.0",
 		"redrun": "^12.0.0",
 		"sharp": "^0.34.3",
 		"uuid": "11.1.0"
