@@ -4,8 +4,8 @@ import * as fse from 'fs-extra';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
-const INPUT_FILE = 'scratch.json';
-const OUTPUT_FILE = 'scratch2.json';
+const INPUT_FILE = 'scratchon';
+const OUTPUT_FILE = 'scratch2on';
 
 interface DataObject {
   _id: string;

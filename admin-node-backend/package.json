@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist-tsc/server.js",
     "dev": "tsx watch src/server.ts",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist-tsc dist-ts dist-esbuild"
   },
   "keywords": [
     "fastify",

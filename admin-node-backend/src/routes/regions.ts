@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
-import { regionsCollection, regionTransitHubsCollection } from '../config.js';
-import { Region, RegionTable, RegionTransitHub } from '../types.js';
-import { executeWithErrorHandling, getEntityById, validateRequiredFields } from '../utils/helpers.js';
+import { regionsCollection, regionTransitHubsCollection } from '../config';
+import { Region, RegionTable, RegionTransitHub } from '../types';
+import { executeWithErrorHandling, getEntityById, validateRequiredFields } from '../utils/helpers';
 
 interface RegionParams {
   region: string;

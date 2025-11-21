@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { vehiclesCollection, seriesCollection, picturesCollection } from '../config.js';
-import { Vehicle, VehicleTable, VehicleSeriesWithPictures, TravelPicture } from '../types.js';
-import { getInternalVehicles } from './vehicles.js';
-import { getPictureCountsForVehicles } from './pictures.js';
+import { vehiclesCollection, seriesCollection, picturesCollection } from '../config';
+import { Vehicle, VehicleTable, VehicleSeriesWithPictures, TravelPicture } from '../types';
+import { getInternalVehicles } from './vehicles';
+import { getPictureCountsForVehicles } from './pictures';
 
 interface SeriesParams {
   series: string;

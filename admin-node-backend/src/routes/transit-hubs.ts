@@ -1,11 +1,11 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
-import { transitHubsCollection, transitHubPicturesCollection } from '../config.js';
-import { TransitHub, TransitHubTable, TransitHubMedia, LatLongResponse } from '../types.js';
-import { executeWithErrorHandling, getPictureCountsForEntities } from '../utils/helpers.js';
-import { listImages } from '../utils/s3.js';
-import { config } from '../config.js';
+import { transitHubsCollection, transitHubPicturesCollection } from '../config';
+import { TransitHub, TransitHubTable, TransitHubMedia, LatLongResponse } from '../types';
+import { executeWithErrorHandling, getPictureCountsForEntities } from '../utils/helpers';
+import { listImages } from '../utils/s3';
+import { config } from '../config';
 
 interface TransitHubParams {
   id: string;

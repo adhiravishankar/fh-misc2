@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
-import { carriersCollection, picturesCollection } from '../config.js';
-import { Carrier, CarrierTable } from '../types.js';
-import { executeWithErrorHandling, getEntityById, validateRequiredFields, getPictureCountsForEntities } from '../utils/helpers.js';
+import { carriersCollection, picturesCollection } from '../config';
+import { Carrier, CarrierTable } from '../types';
+import { executeWithErrorHandling, getEntityById, validateRequiredFields, getPictureCountsForEntities } from '../utils/helpers';
 
 interface CarrierParams {
   carrier: string;

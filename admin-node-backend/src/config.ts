@@ -10,7 +10,7 @@ import type {
   Region,
   RegionTransitHub,
   TransitHubMedia,
-} from './types.js';
+} from './types';
 
 dotenv.config();
 

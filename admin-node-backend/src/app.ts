@@ -1,11 +1,11 @@
 import Fastify, { FastifyInstance } from 'fastify';
 import cors from '@fastify/cors';
-import { registerCarrierRoutes } from './routes/carriers.js';
-import { registerPictureRoutes } from './routes/pictures.js';
-import { registerRegionRoutes } from './routes/regions.js';
-import { registerTransitHubRoutes } from './routes/transit-hubs.js';
-import { registerSeriesRoutes } from './routes/vehicle-series.js';
-import { registerVehicleRoutes } from './routes/vehicles.js';
+import { registerCarrierRoutes } from './routes/carriers';
+import { registerPictureRoutes } from './routes/pictures';
+import { registerRegionRoutes } from './routes/regions';
+import { registerTransitHubRoutes } from './routes/transit-hubs';
+import { registerSeriesRoutes } from './routes/vehicle-series';
+import { registerVehicleRoutes } from './routes/vehicles';
 
 export async function buildApp(): Promise<FastifyInstance> {
   const fastify: FastifyInstance = Fastify({

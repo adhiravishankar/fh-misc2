@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
-import { vehiclesCollection, picturesCollection, seriesCollection } from '../config.js';
-import { Vehicle, VehicleTable, VehicleSeries } from '../types.js';
-import { executeWithErrorHandling, getPictureCountsForEntities } from '../utils/helpers.js';
+import { vehiclesCollection, picturesCollection, seriesCollection } from '../config';
+import { Vehicle, VehicleTable, VehicleSeries } from '../types';
+import { executeWithErrorHandling, getPictureCountsForEntities } from '../utils/helpers';
 
 interface VehicleParams {
   vehicle: string;

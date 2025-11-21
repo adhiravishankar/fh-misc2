@@ -1,9 +1,9 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
-import { picturesCollection, seriesCollection } from '../config.js';
-import { TravelPicture, TravelPictureTable, TravelPictureSeries, VehicleSeries } from '../types.js';
-import { executeWithErrorHandling, validateRequiredFields } from '../utils/helpers.js';
-import { listImages } from '../utils/s3.js';
+import { picturesCollection, seriesCollection } from '../config';
+import { TravelPicture, TravelPictureTable, TravelPictureSeries, VehicleSeries } from '../types';
+import { executeWithErrorHandling, validateRequiredFields } from '../utils/helpers';
+import { listImages } from '../utils/s3';
 
 /**
  * Get all travel pictures
