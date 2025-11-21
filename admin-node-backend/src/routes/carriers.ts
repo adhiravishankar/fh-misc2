@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
-import { carriersCollection, picturesCollection } from '../config';
-import { Carrier, CarrierTable, TravelPicture } from '../types';
-import { executeWithErrorHandling, getEntityById, validateRequiredFields, getPictureCountsForEntities } from '../utils/helpers';
+import { carriersCollection, picturesCollection } from '../config.js';
+import { Carrier, CarrierTable } from '../types.js';
+import { executeWithErrorHandling, getEntityById, validateRequiredFields, getPictureCountsForEntities } from '../utils/helpers.js';
 
 interface CarrierParams {
   carrier: string;
@@ -11,7 +11,7 @@ interface CarrierParams {
 /**
  * Get all carriers with picture counts
  */
-async function getCarriers(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+async function getCarriers(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
   const carriers = await carriersCollection.find({}).sort({ name: 1 }).toArray();
 
   // Collect all carrier IDs

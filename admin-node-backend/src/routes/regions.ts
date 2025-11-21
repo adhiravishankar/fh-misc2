@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
-import { regionsCollection, regionTransitHubsCollection } from '../config';
-import { Region, RegionTable, RegionTransitHub } from '../types';
-import { executeWithErrorHandling, getEntityById, validateRequiredFields } from '../utils/helpers';
+import { regionsCollection, regionTransitHubsCollection } from '../config.js';
+import { Region, RegionTable, RegionTransitHub } from '../types.js';
+import { executeWithErrorHandling, getEntityById, validateRequiredFields } from '../utils/helpers.js';
 
 interface RegionParams {
   region: string;
@@ -11,8 +11,8 @@ interface RegionParams {
 /**
  * Get all regions with transit hub counts
  */
-async function getRegions(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-  const regions = await regionsCollection.find({}).toArray();
+async function getRegions(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
+  const regions = await regionsCollection.find({}).toArray() as Region[];
 
   // Collect all region IDs
   const regionIds = regions.map((r) => r._id);
@@ -20,7 +20,7 @@ async function getRegions(request: FastifyRequest, reply: FastifyReply): Promise
   // Batch fetch all region-transit-hub links
   const regionTransitHubs = await regionTransitHubsCollection
     .find({ region: { $in: regionIds } } as any)
-    .toArray();
+    .toArray() as RegionTransitHub[];
 
   // Count transit-hubs per region
   const transitHubCount: Record<string, number> = {};

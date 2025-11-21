@@ -1,14 +1,14 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
-import { picturesCollection, seriesCollection } from '../config';
-import { TravelPicture, TravelPictureTable, TravelPictureSeries, VehicleSeries, FPGroupKey, CarrierSeriesKey } from '../types';
-import { executeWithErrorHandling, validateRequiredFields } from '../utils/helpers';
-import { listImages } from '../utils/s3';
+import { picturesCollection, seriesCollection } from '../config.js';
+import { TravelPicture, TravelPictureTable, TravelPictureSeries, VehicleSeries } from '../types.js';
+import { executeWithErrorHandling, validateRequiredFields } from '../utils/helpers.js';
+import { listImages } from '../utils/s3.js';
 
 /**
  * Get all travel pictures
  */
-async function getTravelPictures(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+async function getTravelPictures(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
   const pictures = await getTravelPicturesInternal();
   reply.send(pictures);
 }
@@ -17,7 +17,7 @@ async function getTravelPictures(request: FastifyRequest, reply: FastifyReply): 
  * Helper function to get travel pictures internally
  */
 async function getTravelPicturesInternal(): Promise<TravelPicture[]> {
-  return await picturesCollection.find({}).toArray();
+  return await picturesCollection.find({}).toArray() as TravelPicture[];
 }
 
 /**
@@ -55,8 +55,8 @@ async function linkPhotoToTravel(request: FastifyRequest, reply: FastifyReply): 
 /**
  * Get travel pictures table (aggregated by carrier/vehicle)
  */
-async function getTravelPicturesTable(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-  const pictures = await picturesCollection.find({}).toArray();
+async function getTravelPicturesTable(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
+  const pictures = await picturesCollection.find({}).toArray() as TravelPicture[];
   const table = convertToTravelPictureTable(pictures);
   reply.send(table);
 }
@@ -84,9 +84,9 @@ function convertToTravelPictureTable(pictures: TravelPicture[]): TravelPictureTa
 /**
  * Get travel pictures series (aggregated by carrier/series)
  */
-async function getTravelPicturesSeries(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-  const pictures = await picturesCollection.find({}).toArray();
-  const seriesData = await seriesCollection.find({}).toArray();
+async function getTravelPicturesSeries(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
+  const pictures = await picturesCollection.find({}).toArray() as TravelPicture[];
+  const seriesData = await seriesCollection.find({}).toArray() as VehicleSeries[];
 
   const aggregatedPictureSeries = aggregatePictureData(pictures, seriesData);
   reply.send(aggregatedPictureSeries);
@@ -158,7 +158,7 @@ export async function getPictureCountsForVehicles(vehicleIds: string[]): Promise
 /**
  * Get unlinked travel pictures
  */
-async function getUnlinkedTravelPictures(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+async function getUnlinkedTravelPictures(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
   try {
     const linkedPictures = extractTravelPictureUrls(await getTravelPicturesInternal());
     const s3Pictures = await listImages('milememory', 'vehicles/');
