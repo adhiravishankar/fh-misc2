@@ -17,9 +17,6 @@ importers:
       '@fastify/cors':
         specifier: ^11.1.0
         version: 11.1.0
-      axios:
-        specifier: ^1.13.2
-        version: 1.13.2
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
@@ -29,6 +26,9 @@ importers:
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
+      ky:
+        specifier: ^1.7.3
+        version: 1.14.0
       mongodb:
         specifier: ^7.0.0
         version: 7.0.0
@@ -1229,6 +1229,10 @@ packages:
 
   jws@3.2.2:
     resolution: {integrity: sha512-YHlZCB6lMTllWDtSPHz/ZXTsi8S00usEV6v1tjq8tOUZzw7DpSDWVXjXDre6ed1w/pd495ODpHZYSdkRTsa0HA==}
+
+  ky@1.14.0:
+    resolution: {integrity: sha512-Rczb6FMM6JT0lvrOlP5WUOCB7s9XKxzwgErzhKlKde1bEV90FXplV1o87fpt4PU/asJFiqjYJxAJyzJhcrxOsQ==}
+    engines: {node: '>=18'}
 
   lie@3.3.0:
     resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
@@ -3377,6 +3381,8 @@ snapshots:
     dependencies:
       jwa: 1.4.2
       safe-buffer: 5.2.1
+
+  ky@1.14.0: {}
 
   lie@3.3.0:
     dependencies:

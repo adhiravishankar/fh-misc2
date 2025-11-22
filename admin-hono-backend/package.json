@@ -1,0 +1,44 @@
+{
+  "name": "admin-hono-backend",
+  "version": "1.0.0",
+  "description": "Admin backend API built with Hono",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "offline": "serverless offline",
+    "deploy": "npm run build && serverless deploy",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "hono",
+    "api",
+    "admin",
+    "backend",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.937.0",
+    "@hono/node-server": "^1.13.7",
+    "dotenv": "^17.2.3",
+    "hono": "^4.6.14",
+    "ky": "^1.7.3",
+    "mongodb": "^7.0.0",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@hono/aws-lambda": "^1.0.4",
+    "@types/aws-lambda": "^8.10.159",
+    "@types/node": "^24.10.1",
+    "rimraf": "^6.1.2",
+    "serverless": "^4.25.0",
+    "serverless-offline": "^14.3.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
+

@@ -86,23 +86,23 @@ response = requests.get('http://localhost:3000/carriers', headers=headers)
 data = response.json()
 ```
 
-### Axios Example
+### Ky Example
 
 ```typescript
-import axios from 'axios';
+import ky from 'ky';
 
 const AUTH_TOKEN = 'a1b2c3d4e5f67890a1b2c3d4e5f67890a1b2c3d4e5f67890a1b2c3d4e5f67890';
 
-const api = axios.create({
-  baseURL: 'http://localhost:3000',
+const api = ky.create({
+  prefixUrl: 'http://localhost:3000',
   headers: {
     'Authorization': `Bearer ${AUTH_TOKEN}`
   }
 });
 
 // Make requests
-const carriers = await api.get('/carriers');
-const vehicles = await api.get('/vehicles');
+const carriers = await api.get('carriers').json();
+const vehicles = await api.get('vehicles').json();
 ```
 
 ## Routes That Require Authentication

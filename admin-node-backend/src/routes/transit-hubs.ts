@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
+import ky from 'ky';
 import { transitHubsCollection, transitHubPicturesCollection } from '../config';
 import { TransitHub, TransitHubTable, TransitHubMedia, LatLongResponse } from '../types';
 import { executeWithErrorHandling, getPictureCountsForEntities } from '../utils/helpers';
@@ -40,19 +40,16 @@ async function createTransitHub(request: FastifyRequest, reply: FastifyReply): P
 
   try {
     // Fetch timezone information from external API
-    const response = await axios.get<LatLongResponse>(
-      'https://api-bdc.net/data/timezone-by-location',
-      {
-        params: {
-          latitude: transitHub.latitude,
-          longitude: transitHub.longitude,
-          key: config.bdcApiKey,
-        },
-        timeout: 10000,
-      }
-    );
+    const response = await ky.get('https://api-bdc.net/data/timezone-by-location', {
+      searchParams: {
+        latitude: transitHub.latitude.toString(),
+        longitude: transitHub.longitude.toString(),
+        key: config.bdcApiKey,
+      },
+      timeout: 10000,
+    }).json<LatLongResponse>();
 
-    transitHub.iana = response.data.ianaTimeId;
+    transitHub.iana = response.ianaTimeId;
   } catch (error) {
     console.error('Failed to fetch timezone information:', error);
     return reply.status(500).send({ error: 'Failed to fetch timezone information' });
@@ -79,19 +76,16 @@ async function patchTransitHub(
 
   try {
     // Fetch timezone information from external API
-    const response = await axios.get<LatLongResponse>(
-      'https://api-bdc.net/data/timezone-by-location',
-      {
-        params: {
-          latitude: transitHub.latitude,
-          longitude: transitHub.longitude,
-          key: config.bdcApiKey,
-        },
-        timeout: 10000,
-      }
-    );
+    const response = await ky.get('https://api-bdc.net/data/timezone-by-location', {
+      searchParams: {
+        latitude: transitHub.latitude.toString(),
+        longitude: transitHub.longitude.toString(),
+        key: config.bdcApiKey,
+      },
+      timeout: 10000,
+    }).json<LatLongResponse>();
 
-    transitHub.iana = response.data.ianaTimeId;
+    transitHub.iana = response.ianaTimeId;
   } catch (error) {
     console.error('Failed to fetch timezone information:', error);
     return reply.status(500).send({ error: 'Failed to fetch timezone information' });
