@@ -1,6 +1,6 @@
 service: admin-node-backend
 
-frameworkVersion: '3'
+frameworkVersion: '4'
 
 provider:
   name: aws
@@ -11,6 +11,10 @@ provider:
   timeout: 30
   environment:
     NODE_ENV: ${self:provider.stage}
+    MONGODB_URL: ${env:MONGODB_URL}
+    AUTH_TOKEN: ${env:AUTH_TOKEN}
+    BDC_API_KEY: ${env:BDC_API_KEY, ''}
+    AWS_REGION: ${self:provider.region}
   
 functions:
   api:
@@ -29,4 +33,8 @@ plugins:
 custom:
   serverless-offline:
     httpPort: 3001
+    host: 0.0.0.0
+    noPrependStageInUrl: true
+    lambdaPort: 3002
+    websocketPort: 3003
 

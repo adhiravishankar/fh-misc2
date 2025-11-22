@@ -6,11 +6,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 dist/
+dist-tsc/
 build/
 coverage/
 .vscode/
 .idea/
 *.tsbuildinfo
+.serverless/
 
 dist-tsc
 dist-ts

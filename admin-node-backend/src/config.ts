@@ -15,21 +15,21 @@ import type {
 dotenv.config();
 
 // Validate environment variables
-const requiredEnvVars = ['MONGODB_URL', 'JWT_SECRET'];
+const requiredEnvVars = ['MONGODB_URL', 'AUTH_TOKEN'];
 for (const envVar of requiredEnvVars) {
   if (!process.env[envVar]) {
     throw new Error(`Missing required environment variable: ${envVar}`);
   }
 }
 
-// JWT Secret validation
-if (process.env.JWT_SECRET && process.env.JWT_SECRET.length < 32) {
-  throw new Error('JWT_SECRET must be at least 32 characters long');
+// Auth token validation (must be 64 characters)
+if (process.env.AUTH_TOKEN && process.env.AUTH_TOKEN.length !== 64) {
+  throw new Error('AUTH_TOKEN must be exactly 64 characters long');
 }
 
 export const config = {
   mongodbUrl: process.env.MONGODB_URL!,
-  jwtSecret: process.env.JWT_SECRET!,
+  authToken: process.env.AUTH_TOKEN!,
   bdcApiKey: process.env.BDC_API_KEY || '',
   port: parseInt(process.env.PORT || '8080', 10),
   corsOrigins: ['https://admin.flighthistory.app'],

@@ -1,22 +1,16 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import jwt from 'jsonwebtoken';
 import { config } from '../config';
-import { JWTPayload } from '../types';
 
 /**
  * Authentication middleware for admin backend
  *
- * This middleware provides JWT token-based authentication for all admin routes.
+ * This middleware provides simple token-based authentication for all admin routes.
  * All routes (except /health) require a valid Bearer token in the Authorization header.
  *
  * Usage:
- *   Authorization: Bearer <your-jwt-token>
+ *   Authorization: Bearer <your-64-character-token>
  *
- * The JWT token must:
- *   - Be signed with the JWT_SECRET environment variable
- *   - Have valid expiration (exp) and issued-at (iat) claims
- *   - Contain a valid UUID in the subject (sub) claim
- *   - Optionally contain role: "admin" for admin-specific validation
+ * The token must match the AUTH_TOKEN environment variable (64 characters).
  */
 
 export async function authenticateAdmin(
@@ -24,9 +18,9 @@ export async function authenticateAdmin(
   reply: FastifyReply
 ): Promise<void> {
   try {
-    // Validate JWT secret
-    if (!config.jwtSecret || config.jwtSecret.length < 32) {
-      return reply.status(500).send({ error: 'Server configuration error' });
+    // Validate auth token is configured
+    if (!config.authToken) {
+      return reply.status(500).send({ error: 'Server configuration error: AUTH_TOKEN not set' });
     }
 
     // Get Authorization header
@@ -38,39 +32,42 @@ export async function authenticateAdmin(
     // Check if it starts with "Bearer "
     const bearerPrefix = 'Bearer ';
     if (!authHeader.startsWith(bearerPrefix)) {
-      return reply.status(401).send({ error: 'Invalid authorization format' });
+      return reply.status(401).send({ error: 'Invalid authorization format. Use: Bearer <token>' });
     }
 
     // Extract the token
-    const tokenString = authHeader.slice(bearerPrefix.length);
+    const providedToken = authHeader.slice(bearerPrefix.length).trim();
 
-    // Parse and validate the token
-    try {
-      const decoded = jwt.verify(tokenString, config.jwtSecret, {
-        algorithms: ['HS256'],
-      }) as JWTPayload;
-
-      // Optionally validate the payload structure
-      if (!decoded.sub || !decoded.exp || !decoded.iat) {
-        return reply.status(401).send({ error: 'Invalid token (missing claims)' });
-      }
-
-      // Attach decoded token to request for use in route handlers
-      (request as any).user = decoded;
-    } catch (error: any) {
-      if (error.name === 'TokenExpiredError') {
-        return reply.status(401).send({ error: 'Token expired' });
-      } else if (error.name === 'JsonWebTokenError') {
-        return reply.status(401).send({ error: 'Invalid token (malformed)' });
-      } else if (error.name === 'NotBeforeError') {
-        return reply.status(401).send({ error: 'Token not valid yet' });
-      } else {
-        return reply.status(401).send({ error: 'Invalid token (unknown error)' });
-      }
+    // Validate token length (should be 64 characters)
+    if (providedToken.length !== 64) {
+      return reply.status(401).send({ error: 'Invalid token length. Token must be 64 characters.' });
     }
+
+    // Compare tokens using constant-time comparison to prevent timing attacks
+    if (!constantTimeCompare(providedToken, config.authToken)) {
+      return reply.status(401).send({ error: 'Invalid token' });
+    }
+
+    // Token is valid, request can proceed
   } catch (error) {
     console.error('Authentication error:', error);
     return reply.status(500).send({ error: 'Internal server error' });
   }
+}
+
+/**
+ * Constant-time string comparison to prevent timing attacks
+ */
+function constantTimeCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) {
+    return false;
+  }
+
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+
+  return result === 0;
 }
 
