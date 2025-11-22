@@ -4,7 +4,7 @@
     "module": "ES2022",
     "lib": ["ES2022"],
     "moduleResolution": "node",
-    "rootDir": "./src",
+    "rootDir": "hono",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
@@ -19,7 +19,8 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*"],
+  "include": ["hono/**/*"],
   "exclude": ["node_modules", "dist", "dist-tsc"]
 }
+
 
