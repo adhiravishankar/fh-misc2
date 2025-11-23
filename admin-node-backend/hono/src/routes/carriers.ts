@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { carriersCollection, picturesCollection } from '../config';
 import { Carrier, CarrierTable } from '../types';
 import { executeWithErrorHandling, getEntityById, validateRequiredFields, getPictureCountsForEntities } from '../utils/helpers';
-import { authenticateAdmin } from '../../middleware/authentication';
+import { authenticateAdmin } from '../middleware/authentication';
 
 /**
  * Get all carriers with picture counts

@@ -4,7 +4,7 @@ import { picturesCollection, seriesCollection } from '../config';
 import { TravelPicture, TravelPictureTable, TravelPictureSeries, VehicleSeries } from '../types';
 import { executeWithErrorHandling, validateRequiredFields } from '../utils/helpers';
 import { listImages } from '../utils/s3';
-import { authenticateAdmin } from '../../middleware/authentication';
+import { authenticateAdmin } from '../middleware/authentication';
 
 async function getTravelPicturesInternal(): Promise<TravelPicture[]> {
   return await picturesCollection.find({}).toArray() as TravelPicture[];

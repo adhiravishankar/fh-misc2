@@ -1,6 +1,8 @@
-# Admin Node Backend
+# Admin Node Backend (Fastify)
 
 A modern backend API built with Fastify and TypeScript.
+
+> **Note:** This is the Fastify implementation. See [../README.md](../README.md) for an overview of both implementations (Fastify and Hono).
 
 ## Features
 
@@ -189,7 +191,7 @@ This starts the server on `http://localhost:3001` and simulates the AWS Lambda e
 ## Project Structure
 
 ```
-admin-node-backend/
+admin-node-backend/fastify/
 ├── src/
 │   ├── app.ts          # Fastify app configuration
 │   ├── server.ts       # Local development server
@@ -212,8 +214,8 @@ admin-node-backend/
 ├── tsconfig.json       # TypeScript configuration
 ├── serverless.yml      # Serverless Framework config
 ├── package.json
-├── .gitignore
-├── README.md
+├── README.md           # This file
+├── AUTH.md             # Authentication guide
 └── SERVERLESS.md       # Detailed serverless guide
 ```
 

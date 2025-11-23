@@ -1,5 +1,5 @@
 import { ListObjectsV2Command, ListObjectsV2CommandOutput } from '@aws-sdk/client-s3';
-import { s3Client } from '../../config';
+import { s3Client } from '../config';
 import path from 'path';
 
 // Image extensions set for O(1) lookup

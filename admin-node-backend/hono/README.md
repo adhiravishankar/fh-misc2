@@ -1,6 +1,8 @@
-# Admin Hono Backend
+# Admin Node Backend (Hono)
 
 A modern backend API built with Hono and TypeScript.
+
+> **Note:** This is the Hono implementation. See [../README.md](../README.md) for an overview of both implementations (Fastify and Hono).
 
 ## Features
 
@@ -149,7 +151,7 @@ curl http://localhost:8080/carriers \
   -H "Authorization: Bearer your_64_character_token_here"
 ```
 
-See [AUTH.md](../admin-node-backend/AUTH.md) for detailed authentication documentation.
+See [../fastify/AUTH.md](../fastify/AUTH.md) for detailed authentication documentation (applies to both implementations).
 
 ## Deployment
 
@@ -205,7 +207,7 @@ Hono is a modern web framework that's:
 ## Project Structure
 
 ```
-admin-hono-backend/
+admin-node-backend/hono/
 ├── src/
 │   ├── app.ts          # Hono app configuration
 │   ├── server.ts       # Local development server
@@ -228,15 +230,14 @@ admin-hono-backend/
 ├── tsconfig.json       # TypeScript configuration
 ├── serverless.yml      # Serverless Framework config
 ├── package.json
-├── .gitignore
-└── README.md
+└── README.md           # This file
 ```
 
-## Differences from admin-node-backend
+## Differences from Fastify Implementation
 
-This is a port of the Fastify-based `admin-node-backend` to Hono:
+This is the Hono implementation with identical functionality to the Fastify version:
 
-| Feature | Fastify (admin-node-backend) | Hono (admin-hono-backend) |
+| Feature | Fastify | Hono |
 |---------|------------------------------|---------------------------|
 | Performance | Very Fast | **Ultrafast** (5x faster) |
 | Bundle Size | ~500KB | **~13KB** |

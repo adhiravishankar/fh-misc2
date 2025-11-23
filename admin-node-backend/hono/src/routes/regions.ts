@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { regionsCollection, regionTransitHubsCollection } from '../config';
 import { Region, RegionTable, RegionTransitHub } from '../types';
 import { executeWithErrorHandling, getEntityById, validateRequiredFields } from '../utils/helpers';
-import { authenticateAdmin } from '../../middleware/authentication';
+import { authenticateAdmin } from '../middleware/authentication';
 
 async function getRegions(c: Context) {
   const regions = await regionsCollection.find({}).toArray() as Region[];

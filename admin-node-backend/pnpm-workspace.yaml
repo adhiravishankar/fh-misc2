@@ -1,3 +1,7 @@
+packages:
+  - 'fastify'
+  - 'hono'
+
 onlyBuiltDependencies:
   - esbuild
   - serverless

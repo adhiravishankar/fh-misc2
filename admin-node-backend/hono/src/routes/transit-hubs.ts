@@ -6,7 +6,7 @@ import { TransitHub, TransitHubTable, TransitHubMedia, LatLongResponse } from '.
 import { executeWithErrorHandling, getPictureCountsForEntities } from '../utils/helpers';
 import { listImages } from '../utils/s3';
 import { config } from '../config';
-import { authenticateAdmin } from '../../middleware/authentication';
+import { authenticateAdmin } from '../middleware/authentication';
 
 async function getTransitHubs(c: Context) {
   const transitHubs = await transitHubsCollection.find({}).toArray() as TransitHub[];

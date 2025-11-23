@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { vehiclesCollection, picturesCollection, seriesCollection } from '../config';
 import { Vehicle, VehicleTable, VehicleSeries } from '../types';
 import { executeWithErrorHandling, getPictureCountsForEntities } from '../utils/helpers';
-import { authenticateAdmin } from '../../middleware/authentication';
+import { authenticateAdmin } from '../middleware/authentication';
 
 /**
  * Get all vehicles with picture counts

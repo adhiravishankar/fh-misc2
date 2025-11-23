@@ -1,0 +1,10 @@
+{
+    "name": "admin-node-backend",
+    "version": "1.0.0",
+    "author": "Adhi Ravishankar",
+    "license": "private",
+    "devDependencies": {
+        "eslint": "^9.22.0",
+        "typescript": "^5.7.3"
+    }
+}
