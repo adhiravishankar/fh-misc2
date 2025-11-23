@@ -12,7 +12,9 @@ export async function executeWithErrorHandling<T>(
     return await operation();
   } catch (error) {
     console.error('Database operation error:', error);
-    return c.json({ error: 'Database operation failed', details: (error as Error).message }, 500);
+    c.status(500);
+    await c.json({ error: 'Database operation failed', details: (error as Error).message });
+    return null;
   }
 }
 

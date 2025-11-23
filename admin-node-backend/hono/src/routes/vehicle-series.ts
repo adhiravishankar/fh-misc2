@@ -3,7 +3,7 @@ import { vehiclesCollection, seriesCollection, picturesCollection } from '../con
 import { Vehicle, VehicleTable, VehicleSeriesWithPictures, TravelPicture } from '../types';
 import { getInternalVehicles } from './vehicles';
 import { getPictureCountsForVehicles } from './pictures';
-import { authenticateAdmin } from '../../middleware/authentication';
+import { authenticateAdmin } from '../middleware/authentication';
 
 async function getVehiclesInSeries(seriesParam: string): Promise<string[]> {
   const series = await seriesCollection.find({ series: seriesParam } as any).toArray();

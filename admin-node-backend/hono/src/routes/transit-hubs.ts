@@ -48,6 +48,8 @@ async function createTransitHub(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 async function patchTransitHub(c: Context) {
@@ -79,6 +81,8 @@ async function patchTransitHub(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 async function deleteTransitHub(c: Context) {
@@ -91,6 +95,8 @@ async function deleteTransitHub(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 async function getTransitHubPicturesInternal(): Promise<string[]> {
@@ -109,7 +115,9 @@ async function getUnlinkedTransitHubPictures(c: Context) {
     return c.json(unlinked);
   } catch (error) {
     console.error('Failed to get unlinked pictures:', error);
-    return c.json({ error: 'Failed to get unlinked pictures' }, 500);
+    c.status(500);
+    await c.json({ error: 'Failed to get unlinked pictures' });
+    return;
   }
 }
 
@@ -128,6 +136,8 @@ async function linkPhotoToTransitHub(c: Context) {
   if (result) {
     return c.json(transitHubMedia);
   }
+
+  return;
 }
 
 export function registerTransitHubRoutes(app: Hono): void {

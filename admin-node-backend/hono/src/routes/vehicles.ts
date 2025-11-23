@@ -53,6 +53,8 @@ async function postVehicle(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 /**
@@ -70,6 +72,8 @@ async function updateVehicle(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 /**
@@ -85,6 +89,8 @@ async function deleteVehicle(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 /**
@@ -95,6 +101,8 @@ async function getVehiclePictures(c: Context) {
 
   const pictures = await picturesCollection.find({ vehicle: vehicleId } as any).toArray();
   return c.json(pictures);
+
+  return;
 }
 
 /**
@@ -116,6 +124,8 @@ async function linkSeriesToVehicle(c: Context) {
   if (result) {
     return c.json(seriesLink);
   }
+
+  return;
 }
 
 /**

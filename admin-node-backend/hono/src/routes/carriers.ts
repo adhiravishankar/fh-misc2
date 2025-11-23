@@ -48,6 +48,8 @@ async function postCarrier(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 /**
@@ -81,6 +83,8 @@ async function patchCarrier(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 /**
@@ -96,6 +100,8 @@ async function deleteCarrier(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 /**

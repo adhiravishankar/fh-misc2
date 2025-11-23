@@ -41,6 +41,8 @@ async function createRegion(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 async function patchRegion(c: Context) {
@@ -65,6 +67,8 @@ async function patchRegion(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 async function linkRegionToTransitHub(c: Context) {
@@ -85,6 +89,8 @@ async function linkRegionToTransitHub(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 async function deleteRegion(c: Context) {
@@ -97,6 +103,8 @@ async function deleteRegion(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 export function registerRegionRoutes(app: Hono): void {

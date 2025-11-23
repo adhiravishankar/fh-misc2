@@ -102,6 +102,8 @@ async function linkPhotoToTravel(c: Context) {
   if (result) {
     return c.json(result);
   }
+
+  return;
 }
 
 export async function getPictureCountsForVehicles(vehicleIds: string[]): Promise<Record<string, number>> {
